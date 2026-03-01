@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueScore</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-container">
+
+    <!-- Header -->
+    <header class="popup-header">
+      <span class="popup-logo">🔍</span>
+      <div>
+        <h1 class="popup-title">TrueScore</h1>
+        <p class="popup-subtitle">Fake Review Detector</p>
+      </div>
+      <label class="toggle-switch" aria-label="Enable or disable TrueScore">
+        <input type="checkbox" id="toggle-enabled" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </header>
+
+    <!-- Status Banner -->
+    <div id="status-banner" class="status-banner status-idle">
+      <span id="status-icon">🔄</span>
+      <span id="status-text">Navigate to an Amazon product page to scan reviews.</span>
+    </div>
+
+    <!-- Results Panel -->
+    <div id="results-panel" class="results-panel hidden">
+
+      <div class="results-rating-row">
+        <div class="results-rating-block">
+          <div class="results-rating-label">Amazon Rating</div>
+          <div class="results-rating-val" id="res-original">–</div>
+        </div>
+        <div class="results-arrow">→</div>
+        <div class="results-rating-block results-true-block">
+          <div class="results-rating-label">TrueScore™</div>
+          <div class="results-rating-val results-truescore" id="res-truescore">–</div>
+        </div>
+      </div>
+
+      <div class="results-stats">
+        <div class="results-stat">
+          <span class="stat-num" id="res-total">0</span>
+          <span class="stat-label">Scanned</span>
+        </div>
+        <div class="results-stat stat-fake">
+          <span class="stat-num" id="res-fake">0</span>
+          <span class="stat-label">Fake</span>
+        </div>
+        <div class="results-stat stat-real">
+          <span class="stat-num" id="res-real">0</span>
+          <span class="stat-label">Authentic</span>
+        </div>
+      </div>
+
+      <div class="results-meta" id="res-meta"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span>TrueScore v1.0</span>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </div>
+
+  <!-- Script loaded externally — no inline scripts to satisfy CSP -->
+  <script src="popup.js"></script>
+</body>
+</html>

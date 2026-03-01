@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>TrueScore – Setup Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .hero-icon { font-size: 64px; margin-bottom: 16px; }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .hero p { color: #718096; font-size: 16px; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; }
+
+  .step-card {
+    background: linear-gradient(145deg, #1a202c, #2d3748);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .step-card.step1::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+  .step-card.step2::before { background: linear-gradient(90deg, #f093fb, #f5576c); }
+  .step-card.step3::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 14px;
+  }
+  .step1 .step-number { background: linear-gradient(135deg,#667eea,#764ba2); color: white; }
+  .step2 .step-number { background: linear-gradient(135deg,#f093fb,#f5576c); color: white; }
+  .step3 .step-number { background: linear-gradient(135deg,#4facfe,#00f2fe); color: #0f1117; }
+
+  .step-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .step-desc { color: #a0aec0; line-height: 1.7; margin-bottom: 16px; font-size: 14px; }
+
+  /* Code blocks */
+  .code-block {
+    background: #0a0d14;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: #68D391;
+    margin-top: 10px;
+    position: relative;
+  }
+  .code-block .comment { color: #4a5568; }
+  .code-block .url { color: #667eea; }
+  .code-block .highlight { color: #F6E05E; font-weight: 700; }
+
+  /* Screenshot boxes */
+  .screenshot-box {
+    background: #0a0d14;
+    border: 2px dashed rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 14px;
+  }
+  .screenshot-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4a5568;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .mock-chrome-bar {
+    background: #1a202c;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .chrome-dots { display: flex; gap: 6px; }
+  .chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .chrome-dot.red   { background: #FC8181; }
+  .chrome-dot.yel   { background: #F6E05E; }
+  .chrome-dot.grn   { background: #68D391; }
+  .chrome-url {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: #667eea;
+    font-family: monospace;
+  }
+
+  .mock-page {
+    background: #141920;
+    border-radius: 0 0 8px 8px;
+    padding: 14px;
+  }
+
+  .ext-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ext-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .ext-info { flex: 1; }
+  .ext-name { font-weight: 700; font-size: 13px; color: #e2e8f0; }
+  .ext-id   { font-size: 10px; color: #4a5568; font-family: monospace; margin-top: 2px; }
+  .ext-btn  {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #0f1117;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Toggle pill */
+  .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #a0aec0;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .toggle-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .toggle-dot.on { background: #48BB78; }
+  .toggle-dot.off { background: #4a5568; }
+
+  /* File structure */
+  .file-tree {
+    background: #0a0d14;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 2;
+    margin-top: 12px;
+  }
+  .file-folder { color: #F6E05E; }
+  .file-item   { color: #68D391; margin-left: 20px; }
+  .file-item.icon-folder { color: #667eea; }
+  .file-arrow  { color: #4a5568; }
+
+  /* Result preview */
+  .result-preview {
+    background: linear-gradient(145deg, #1a202c, #2d3748);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .rp-header {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+  }
+  .rp-body { padding: 14px 16px; }
+  .rp-row  { display: flex; gap: 10px; margin-bottom: 12px; }
+  .rp-box  {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .rp-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #4a5568; margin-bottom: 4px; }
+  .rp-val   { font-size: 24px; font-weight: 900; color: white; }
+  .rp-val.red  { color: #FC8181; }
+  .rp-val.grn  { color: #68D391; }
+  .rp-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .rp-pill  { padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .rp-pill.grey { background: rgba(160,174,192,0.15); color: #A0AEC0; }
+  .rp-pill.red  { background: rgba(229,62,62,0.15);   color: #FC8181; }
+  .rp-pill.grn  { background: rgba(72,187,120,0.15);  color: #68D391; }
+
+  /* Tip box */
+  .tip-box {
+    background: rgba(102,126,234,0.1);
+    border: 1px solid rgba(102,126,234,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: #a0aec0;
+    line-height: 1.6;
+  }
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* What happens section */
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .feature-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .feature-icon { font-size: 24px; margin-bottom: 8px; }
+  .feature-title { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+  .feature-desc  { font-size: 12px; color: #718096; line-height: 1.5; }
+
+  /* Bottom banner */
+  .bottom-banner {
+    text-align: center;
+    padding: 32px;
+    background: linear-gradient(145deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+    border: 1px solid rgba(102,126,234,0.2);
+    border-radius: 16px;
+    margin-top: 32px;
+  }
+  .bottom-banner h2 { font-size: 22px; font-weight: 900; color: white; margin-bottom: 8px; }
+  .bottom-banner p  { color: #718096; font-size: 14px; }
+
+  a { color: #667eea; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-icon">🔍</div>
+    <h1>TrueScore Setup Guide</h1>
+    <p>Load your fake-review detector into Chrome in 3 simple steps</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step-card step1">
+      <div class="step-number">1</div>
+      <div class="step-title">Open Chrome Extensions Page</div>
+      <div class="step-desc">
+        Open a new Chrome tab and type the following URL into the address bar, then press <strong style="color:#e2e8f0">Enter</strong>. This opens Chrome's extension manager where you can install local extensions.
+      </div>
+      <div class="code-block">
+        <span class="comment">// Paste this into Chrome's address bar:</span><br>
+        <span class="url">chrome://extensions</span>
+      </div>
+
+      <div class="screenshot-box">
+        <div class="screenshot-title">What you'll see → find "Developer mode" in the top-right corner</div>
+        <div class="mock-chrome-bar">
+          <div class="chrome-dots">
+            <div class="chrome-dot red"></div>
+            <div class="chrome-dot yel"></div>
+            <div class="chrome-dot grn"></div>
+          </div>
+          <div class="chrome-url">chrome://extensions</div>
+        </div>
+        <div class="mock-page">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="font-size:18px; font-weight:800; color:#e2e8f0;">Extensions</span>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="font-size:12px; color:#a0aec0;">Developer mode</span>
+              <div style="width:36px; height:20px; background:#48BB78; border-radius:100px; position:relative;">
+                <div style="position:absolute; right:2px; top:2px; width:16px; height:16px; background:white; border-radius:50%;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="color:#4a5568; font-size:12px; text-align:center; padding:20px;">Your installed extensions appear here</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <span>The <strong style="color:#e2e8f0">Developer mode</strong> toggle must be turned <strong style="color:#68D391">ON</strong> (green) before you can load unpacked extensions. It's in the top-right corner of the page.</span>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card step2">
+      <div class="step-number">2</div>
+      <div class="step-title">Click "Load Unpacked" → Select Your Folder</div>
+      <div class="step-desc">
+        After enabling Developer mode, a new button called <strong style="color:#e2e8f0">"Load unpacked"</strong> will appear in the top-left. Click it, then navigate to and select your <code style="color:#F6E05E; background:rgba(246,224,94,0.1); padding:2px 6px; border-radius:4px;">truescore-extension</code> folder (the one containing all the files you downloaded).
+      </div>
+
+      <div class="file-tree">
+        <div><span class="file-folder">📁 truescore-extension/</span> <span style="color:#4a5568; font-size:11px;">← SELECT THIS FOLDER</span></div>
+        <div class="file-item">📄 manifest.json</div>
+        <div class="file-item">📄 background.js</div>
+        <div class="file-item">📄 content.js</div>
+        <div class="file-item">📄 styles.css</div>
+        <div class="file-item">📄 popup.html</div>
+        <div class="file-item">📄 popup.css</div>
+        <div class="file-item">📄 popup.js</div>
+        <div class="file-item icon-folder">📁 icons/</div>
+        <div class="file-item" style="margin-left:40px;">🖼️ icon16.png</div>
+        <div class="file-item" style="margin-left:40px;">🖼️ icon48.png</div>
+        <div class="file-item" style="margin-left:40px;">🖼️ icon128.png</div>
+      </div>
+
+      <div class="screenshot-box" style="margin-top:14px;">
+        <div class="screenshot-title">After loading, TrueScore will appear in your extensions list</div>
+        <div class="mock-page" style="border-radius:8px;">
+          <div class="ext-item">
+            <div class="ext-icon">🔍</div>
+            <div class="ext-info">
+              <div class="ext-name">TrueScore – Fake Review Detector</div>
+              <div class="ext-id">ID: abcdefghijklmnopqrstuvwxyz123456</div>
+            </div>
+            <button class="ext-btn">Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card step3">
+      <div class="step-number">3</div>
+      <div class="step-title">Go to Amazon → Watch It Work!</div>
+      <div class="step-desc">
+        Navigate to any Amazon product page that has customer reviews. Within 1–2 seconds, TrueScore will automatically scan all visible reviews and inject results. Here's what you'll see:
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">TrueScore Widget</div>
+          <div class="feature-desc">A dark floating panel appears above the reviews showing the original vs recalculated rating.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <div class="feature-title">Fake Review Badge</div>
+          <div class="feature-desc">Red bordered reviews get a red pill badge: "AI-Generated / Fake Review Detected".</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <div class="feature-title">Authentic Badge</div>
+          <div class="feature-desc">Real reviews get a subtle green "Verified Authentic" checkmark badge.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔢</div>
+          <div class="feature-title">Badge Counter</div>
+          <div class="feature-desc">The extension icon shows a red number badge with the count of fake reviews found.</div>
+        </div>
+      </div>
+
+      <div class="result-preview">
+        <div class="rp-header">🔍 TrueScore &nbsp;<span style="font-size:10px; font-weight:500; color:rgba(255,255,255,0.6);">Fake Review Detector</span></div>
+        <div class="rp-body">
+          <div class="rp-row">
+            <div class="rp-box">
+              <div class="rp-label">Amazon Rating</div>
+              <div class="rp-val">4.3</div>
+            </div>
+            <div style="display:flex;align-items:center;color:#4a5568;font-size:20px;">→</div>
+            <div class="rp-box">
+              <div class="rp-label">TrueScore™</div>
+              <div class="rp-val red">3.1</div>
+            </div>
+          </div>
+          <div class="rp-pills">
+            <div class="rp-pill grey">📋 12 Reviews Scanned</div>
+            <div class="rp-pill red">⚠️ 4 Fake (33%)</div>
+            <div class="rp-pill grn">✅ 8 Authentic</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:14px;">
+        <span class="tip-icon">🎯</span>
+        <span>Best pages to test: Search for any popular Amazon product (headphones, phone cases, chargers) — products with 100+ reviews are ideal. Try <strong style="color:#e2e8f0">amazon.in</strong> or <strong style="color:#e2e8f0">amazon.com</strong>.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Banner -->
+  <div class="bottom-banner">
+    <h2>🚀 You're All Set!</h2>
+    <p>The extension uses a <strong style="color:#e2e8f0;">mock AI detector</strong> for now.<br>
+    To connect your Python backend, open <code style="color:#667eea;">content.js</code> and replace the mock block inside <code style="color:#667eea;">analyzeReview()</code> with the commented <code style="color:#667eea;">fetch()</code> call shown in the code.</p>
+  </div>
+
+</div>
+</body>
+</html>
